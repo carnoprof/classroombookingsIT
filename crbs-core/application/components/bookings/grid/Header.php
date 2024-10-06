@@ -62,8 +62,8 @@ class Header
 
 			case 'day':
 
-				$prev_label = '&larr; Back';
-				$next_label = 'Next &rarr;';
+				$prev_label = '&larr; Precedente';
+				$next_label = 'Prossimo &rarr;';
 
 				$long_date = $this->context->datetime->format(setting('date_format_long'));
 
@@ -75,11 +75,11 @@ class Header
 
 			case 'room':
 
-				$prev_label = '&larr; Previous week';
+				$prev_label = '&larr; Settimana precedente';
 				$next_label = 'Next week &rarr;';
 
 				$start_date = $this->context->week_start->format(setting('date_format_long'));
-				$week_text = sprintf('Week commencing %s', $start_date);
+				$week_text = sprintf('Settimana che inizia da %s', $start_date);
 
 				$data['title'] = $this->context->timetable_week
 					? $week_text . ' - ' . html_escape($this->context->timetable_week->name)

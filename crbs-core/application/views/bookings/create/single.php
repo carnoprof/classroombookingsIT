@@ -42,11 +42,10 @@ echo form_open(current_url(), $attrs, $hidden);
 
 echo "<fieldset style='border:0'>";
 
-
 // Date
 //
 $field = 'date';
-$label = form_label('Date', 'date');
+$label = form_label('Data', 'date');
 $input = sprintf('%s (%s)', $datetime->format(setting('date_format_long')), html_escape($week->name));
 echo "<p>{$label}{$input}</p>";
 
@@ -54,7 +53,7 @@ echo "<p>{$label}{$input}</p>";
 // Period
 //
 $field = 'period_id';
-$label = form_label('Period', $field);
+$label = form_label('Ora', $field);
 
 $time_fmt = setting('time_format_period');
 
@@ -85,7 +84,7 @@ echo "<p>{$label}{$input}</p>";
 // Room
 //
 $field = 'room_id';
-$label = form_label('Room', $field);
+$label = form_label('Lab/Aula', $field);
 if ($is_admin) {
 	$options = results_to_assoc($all_rooms, 'room_id', 'name');
 	$value = set_value($field, $room->room_id, FALSE);
@@ -104,7 +103,7 @@ echo "<p>{$label}{$input}</p>";
 // Department
 //
 $field = 'department_id';
-$label = form_label('Department', $field);
+$label = form_label('Dipartimento', $field);
 $show_department = FALSE;
 if ($is_admin) {
 	$show_department = TRUE;
@@ -129,7 +128,7 @@ echo ($show_department)
 // Who
 //
 $field = 'user_id';
-$label = form_label('Who', $field);
+$label = form_label('Chi', $field);
 if ($is_admin) {
 	$options = results_to_assoc($all_users, 'user_id', function($user) {
 		return !empty($user->displayname)
@@ -155,7 +154,7 @@ echo "<p>{$label}{$input}</p>";
 //
 $field = 'notes';
 $value = set_value($field, '', FALSE);
-$label = form_label('Notes', 'notes');
+$label = form_label('Note (inserire la classe)', 'notes');
 $input = form_textarea([
 	'autofocus' => 'true',
 	'name' => $field,
@@ -174,7 +173,7 @@ if ($is_admin) {
 	$field = 'recurring';
 	$value = set_value($field, '0', FALSE);
 
-	$label = form_label('Recurring?', 'recurring');
+	$label = form_label('Evento ricorrente?', 'recurring');
 
 	$hidden = form_hidden($field, '0');
 	$input = form_checkbox([
@@ -197,16 +196,16 @@ if ($is_admin) {
 	// Info
 	//
 	$field = 'recurring_info';
-	$label = form_label('Recurs', 'recurring_info');
+	$label = form_label('Ricorre', 'recurring_info');
 	$input = sprintf('Every %s on %s', $day_name, html_escape($week->name));
 	$recurring_fields[] = "<p>{$label}{$input}</p>";
 
 	// Starting from
 	//
 	$field = 'recurring_start';
-	$label = form_label('Starting from...', 'recurring_start');
+	$label = form_label('A partire da...', 'recurring_start');
 	$value = set_value($field, $date_info->date, FALSE);
-	$options = ['session' => '(Start of session)', 'Specific date...' => $recurring_date_options];
+	$options = ['session' => '(Inizio A.S.)', 'Data specifica...' => $recurring_date_options];
 	$input = form_dropdown([
 		'name' => 'recurring_start',
 		'options' => $options,
@@ -217,9 +216,9 @@ if ($is_admin) {
 	// Until
 	//
 	$field = 'recurring_end';
-	$label = form_label('Until...', 'recurring_end');
+	$label = form_label('Fino a...', 'recurring_end');
 	$value = set_value($field, 'session', FALSE);
-	$options = ['session' => '(End of session)', 'Specific date...' => $recurring_date_options];
+	$options = ['session' => '(Fine A.S.)', 'Data specifica...' => $recurring_date_options];
 	$input = form_dropdown([
 		'name' => 'recurring_end',
 		'options' => $options,
@@ -239,7 +238,7 @@ $submit_single = form_button([
 	'type' => 'submit',
 	'name' => 'action',
 	'value' => 'create',
-	'content' => 'Create booking',
+	'content' => 'Crea prenotazione',
 ]);
 
 $submit_recurring = form_button([
@@ -249,7 +248,7 @@ $submit_recurring = form_button([
 	'content' => 'Preview recurring bookings',
 ]);
 
-$cancel = anchor($return_uri, 'Cancel', ['up-dismiss' => '']);
+$cancel = anchor($return_uri, 'Annulla', ['up-dismiss' => '']);
 
 if ($is_admin) {
 	echo "<div class='submit recurring-content' style='border-top:0px;' up-show-for=':unchecked'>{$submit_single} &nbsp; {$cancel}</div>";

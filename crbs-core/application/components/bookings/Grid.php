@@ -146,7 +146,7 @@ class Grid
 			'checked' => false,
 			'up-switch' => '.multi-select-content',
 		]);
-		$input_label = form_label($input . 'Enable multiple selection', 'multi_select', ['class' => 'ni', 'style' => 'display: inline-block;margin-bottom:8px']);
+		$input_label = form_label($input . 'Abilita selezione multipla', 'multi_select', ['class' => 'ni', 'style' => 'display: inline-block;margin-bottom:8px']);
 
 		$check_block = "<div class='block b-50' style='text-align:right'>{$input_label}</div>";
 

@@ -9,7 +9,7 @@ $time_format = setting('time_format_period');
 
 		<div class="box">
 
-			<h3 style="margin: 0 0 16px 0">Active bookings</h3>
+			<h3 style="margin: 0 0 16px 0">Prenotazioni attive</h3>
 			<ul class="dash-booking-list">
 
 				<?php

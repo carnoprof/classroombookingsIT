@@ -1,5 +1,7 @@
 <?php
 
+setlocale('it_IT');
+
 // Determine root path for crbs by looking for `crbs-core` directory.
 //
 $paths = [

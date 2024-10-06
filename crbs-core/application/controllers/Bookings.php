@@ -188,7 +188,7 @@ class Bookings extends MY_Controller
 
 	/**
 	 * View all bookings in series.
-	 * This is accessed from viewing details of one booking in a series.
+	 * This is accessed from viewing details of one booking in a series. b
 	 *
 	 */
 	public function view_series($booking_id)
@@ -226,7 +226,7 @@ class Bookings extends MY_Controller
 	 */
 	public function create($type)
 	{
-		$this->data['title'] = 'Create booking';
+		$this->data['title'] = 'Crea prenotazione';
 
 		if ($this->input->get('params')) {
 			$_SESSION['return_uri'] = 'bookings?' . $this->input->get('params');

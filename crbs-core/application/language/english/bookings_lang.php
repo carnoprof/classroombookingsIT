@@ -1,6 +1,6 @@
 <?php
 
-$lang['bookings_legend_legend'] = 'Legend';
-$lang['bookings_legend_free'] = 'Free';
-$lang['bookings_legend_static'] = 'Timetabled lesson';
-$lang['bookings_legend_staff'] = 'Staff booking';
+$lang['bookings_legend_legend'] = 'Legenda';
+$lang['bookings_legend_free'] = 'Disponibile';
+$lang['bookings_legend_static'] = 'Prenotazione ricorrente';
+$lang['bookings_legend_staff'] = 'Prenotato';

@@ -22,7 +22,7 @@ if ($booking->repeat_id) {
 	$uri = sprintf('bookings/view_series/%d?%s', $booking->booking_id, http_build_query(['params' => $params]));
 	$links[] = [
 		'link' => $uri,
-		'name' => 'View all',
+		'name' => 'Visualizza tutto',
 		'icon' => 'calendar_view_month.png',
 		'attrs' => [
 			'up-target' => '.bookings-view',
@@ -38,7 +38,7 @@ if (booking_editable($booking)) {
 		$edit_choices = $this->load->view('bookings/edit_choice', ['booking' => $booking, 'params' => $params], TRUE);
 		$links[] = [
 			'link' => '#',
-			'name' => 'Edit',
+			'name' => 'Modifica',
 			'icon' => 'edit.png',
 			'attrs' => [
 				'up-layer' => 'new popup',
@@ -52,7 +52,7 @@ if (booking_editable($booking)) {
 		$uri = sprintf('bookings/edit/%d?%s', $booking->booking_id, http_build_query(['params' => $params]));
 		$links[] = [
 			'link' => $uri,
-			'name' => 'Edit',
+			'name' => 'Modifica',
 			'icon' => 'edit.png',
 			'attrs' => [
 				'up-layer' => 'new modal',
@@ -68,7 +68,7 @@ if (booking_cancelable($booking)) {
 	$cancel_choices = $this->load->view('bookings/cancel_choice', ['booking' => $booking, 'params' => $params], TRUE);
 	$links[] = [
 		'link' => '#',
-		'name' => 'Cancel booking',
+		'name' => 'Cancella prenotazione',
 		'icon' => 'delete.png',
 		'attrs' => [
 			'up-layer' => 'new popup',
@@ -89,7 +89,7 @@ $links_html = empty($links)
 //
 $info[] = [
 	'name' => 'date',
-	'label' => 'Date',
+	'label' => 'Data',
 	'value' => $booking->date->format($date_format),
 ];
 
@@ -97,7 +97,7 @@ $info[] = [
 //
 $info[] = [
 	'name' => 'week',
-	'label' => 'Week',
+	'label' => 'Settimana',
 	'value' => week_dot($booking->week, 'sm') . ' ' . html_escape($booking->week->name),
 ];
 
@@ -106,14 +106,14 @@ if ($booking->repeat_id) {
 	$weekday = Calendar::get_day_name($booking->repeat->weekday);
 	$info[] = [
 		'name' => 'occurs',
-		'label' => 'Occurs',
-		'value' => sprintf("%s, every %s", $booking->week->name, $weekday),
+		'label' => 'Occorrenza',
+		'value' => sprintf("%s, ogni %s", $booking->week->name, $weekday),
 	];
 } else {
 	$info[] = [
 		'name' => 'occurs',
-		'label' => 'Occurs',
-		'value' => 'Once',
+		'label' => 'Occorrenza',
+		'value' => 'Singola',
 	];
 }
 
@@ -128,7 +128,7 @@ if (!empty($time_fmt)) {
 }
 $info[] = [
 	'name' => 'period',
-	'label' => 'Period',
+	'label' => 'Ora',
 	'value' => html_escape($booking->period->name . $time),
 ];
 
@@ -152,11 +152,11 @@ if ($booking->user) {
 
 $user_value = ($show_user && ! empty($booking->user))
 	? html_escape($user_label)
-	: '<em>Not available</em>';
+	: '<em>Non disponibile</em>';
 
 $info[] = [
 	'name' => 'user',
-	'label' => 'Booked by',
+	'label' => 'Prenotato da',
 	'value' => $user_value,
 ];
 
@@ -168,7 +168,7 @@ $department = ($booking->department)
 if ($department) {
 	$info[] = [
 		'name' => 'department',
-		'label' => 'Department',
+		'label' => 'Dipartimento',
 		'value' => html_escape($department->name),
 	];
 }
@@ -178,7 +178,7 @@ if ($department) {
 if (!empty($booking->notes)) {
 	$info[] = [
 		'name' => 'notes',
-		'label' => 'Notes',
+		'label' => 'Note',
 		'value' => html_escape($booking->notes),
 	];
 }
@@ -198,7 +198,7 @@ echo "<div class='messages'>{$messages}</div>";
 // Booking
 //
 
-echo "<h3>Booking</h3>";
+echo "<h3>Prenotazione</h3>";
 echo $links_html;
 echo "<div class='bookings-edit-choice'></div>";
 echo "<div class='bookings-cancel'></div>";

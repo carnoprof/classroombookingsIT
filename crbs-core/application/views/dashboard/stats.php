@@ -5,17 +5,17 @@ $block_class = 'b-33';
 $blocks = [];
 
 $blocks[] = [
-	'title' => 'All bookings',
+	'title' => 'Tutte le prenotazioni',
 	'figure' => $totals['all'],
 ];
 
 $blocks[] = [
-	'title' => 'Bookings this session',
+	'title' => 'Prenotazioni A.S. corrente',
 	'figure' => $totals['session'],
 ];
 
 $blocks[] = [
-	'title' => 'Active bookings',
+	'title' => 'Prenotazioni attive',
 	'figure' => $totals['active'],
 ];
 
@@ -34,12 +34,12 @@ if ($max_active_bookings > 0) {
 	$num_active = (int) $totals['active'];
 
 	$blocks[] = [
-		'title' => 'Maximum active bookings allowed',
+		'title' => 'Numero massimo di prenotazioni consentite',
 		'figure' => $max_active_bookings,
 	];
 
 	$blocks[] = [
-		'title' => 'Bookings you can make',
+		'title' => 'Prenotazioni disponibili',
 		'figure' => ($max_active_bookings - $num_active),
 	];
 

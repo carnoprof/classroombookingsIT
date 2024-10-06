@@ -35,7 +35,7 @@ class Profile extends MY_Controller
 			),
 		);
 
-		$this->data['title'] = 'Edit my details';
+		$this->data['title'] = 'Modifica dettagli utente';
 		$this->data['showtitle'] = $this->data['title'];
 		$this->data['body'] = $this->load->view('columns', $columns, TRUE);
 
@@ -50,11 +50,11 @@ class Profile extends MY_Controller
 
 		$this->load->library('form_validation');
 		$this->form_validation->set_rules('password1', 'Password', 'min_length[6]');
-		$this->form_validation->set_rules('password2', 'Password (confirm)', 'min_length[6]|matches[password1]');
-		$this->form_validation->set_rules('email', 'Email address', 'max_length[255]|valid_email');
-		$this->form_validation->set_rules('firstname', 'First name', 'max_length[20]');
-		$this->form_validation->set_rules('lastname', 'Last name', 'max_length[20]');
-		$this->form_validation->set_rules('displayname', 'Display name', 'max_length[20]');
+		$this->form_validation->set_rules('password2', 'Password (conferma)', 'min_length[6]|matches[password1]');
+		$this->form_validation->set_rules('email', 'Indirizzo e-mail', 'max_length[255]|valid_email');
+		$this->form_validation->set_rules('firstname', 'Nome', 'max_length[20]');
+		$this->form_validation->set_rules('lastname', 'Cognome', 'max_length[20]');
+		$this->form_validation->set_rules('displayname', 'Nome visualizzato', 'max_length[20]');
 		$this->form_validation->set_rules('extension', 'Extension', 'max_length[10]');
 
 		if ($this->form_validation->run() == FALSE) {
@@ -81,9 +81,9 @@ class Profile extends MY_Controller
 
 		// Now call database to update user and load appropriate message for return value
 		if ( ! $this->crud_model->Edit('users', 'user_id', $user_id, $data)) {
-			$flashmsg = msgbox('error', 'A database error occured while updating your details.');
+			$flashmsg = msgbox('error', 'Errore aggiornamento dati utente');
 		} else {
-			$flashmsg = msgbox('info', 'Your details have been successfully updated.');
+			$flashmsg = msgbox('info', 'Dettagli utente aggiornati con successo');
 		}
 
 		// Go back to index

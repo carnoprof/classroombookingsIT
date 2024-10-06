@@ -13,7 +13,7 @@ $date_format = setting('date_format_long', 'crbs');
 //
 $info[] = [
 	'name' => 'date',
-	'label' => 'Date',
+	'label' => 'Data',
 	'value' => $booking->date->format($date_format),
 ];
 
@@ -21,7 +21,7 @@ $info[] = [
 //
 $info[] = [
 	'name' => 'week',
-	'label' => 'Week',
+	'label' => 'Settimana',
 	'value' => week_dot($booking->week, 'sm') . ' ' . html_escape($booking->week->name),
 ];
 
@@ -52,7 +52,7 @@ if (!empty($time_fmt)) {
 }
 $info[] = [
 	'name' => 'period',
-	'label' => 'Period',
+	'label' => 'Ora',
 	'value' => html_escape($booking->period->name . $time),
 ];
 
@@ -76,11 +76,11 @@ if ($booking->user) {
 
 $user_value = ($show_user && ! empty($booking->user))
 	? html_escape($user_label)
-	: '<em>Not available</em>';
+	: '<em>Non disponibile</em>';
 
 $info[] = [
 	'name' => 'user',
-	'label' => 'Booked by',
+	'label' => 'Prenotato da',
 	'value' => $user_value,
 ];
 
@@ -92,7 +92,7 @@ $department = ($booking->department)
 if ($department) {
 	$info[] = [
 		'name' => 'department',
-		'label' => 'Department',
+		'label' => 'Dipartimento',
 		'value' => html_escape($department->name),
 	];
 }
@@ -102,7 +102,7 @@ if ($department) {
 if (!empty($booking->notes)) {
 	$info[] = [
 		'name' => 'notes',
-		'label' => 'Notes',
+		'label' => 'Note',
 		'value' => html_escape($booking->notes),
 	];
 }
