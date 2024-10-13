@@ -2,7 +2,7 @@
 
 namespace app\components;
 
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') OR exit('No direct script access allowed'); // Impedisce l'accesso diretto
 
 use \DateTime;
 use \DateInterval;
@@ -12,57 +12,58 @@ use \DatePeriod;
 class Calendar
 {
 
-	// Mode values
-	const MODE_VIEW = 'view';
-	const MODE_NAVIGATE = 'nav';
-	const MODE_CONFIG = 'config';
+	// Modalità possibili
+	const MODE_VIEW = 'view'; // Visualizzazione
+	const MODE_NAVIGATE = 'nav'; // Navigazione
+	const MODE_CONFIG = 'config'; // Configurazione
 
-	// CI instance
+	// Istanza di CodeIgniter
 	private $CI;
 
-	// Session object
+	// Oggetto sessione
 	private $session = FALSE;
 
-	// Array of timetable weeks
+	// Array delle settimane
 	private $weeks = FALSE;
 
-	// Mode [config|navigate|view]
+	// Modalità corrente [config|navigate|view]
 	private $mode = 'view';
 
-	// URL format for navigation
+	// Formato dell'URL di navigazione
 	private $nav_url_format = '';
 
-	// DateTime for selected date, in nav mode.
+	// Oggetto DateTime per la data selezionata
 	private $selected_datetime = FALSE;
 
-	// String of date-formatted Y-m to identify currently selected month.
+	// Mese selezionato in formato 'Y-m'
 	private $selected_month = '';
 
-	// Class for parent item
+	// Classe CSS per l'elemento del mese
 	private $month_class = '';
 
-	// Array of date objects
+	// Array di oggetti data
 	private $dates = [];
 
-	// Week starts on (1=Monday)
+	// Primo giorno della settimana (1=Lunedì)
 	private $first_day = 1;
 
-	// Week ends on
+	// Ultimo giorno della settimana (7=Domenica)
 	private $last_day = 7;
 
 
 	public function __construct($config = [])
 	{
-		$this->CI =& get_instance();
-		$this->CI->load->helper('week');
+		$this->CI =& get_instance(); // Ottiene l'istanza di CodeIgniter
+		$this->CI->load->helper('week'); // Carica un helper
 
-		$this->init($config);
+		$this->init($config); // Inizializza la classe con la configurazione
 	}
 
 
+	// Inizializza le proprietà della classe
 	public function init($config = [])
 	{
-		foreach ($config as $key => $val)
+		foreach ($config as $key => $val) // Imposta le proprietà in base alla configurazione
 		{
 			if (isset($this->$key))
 			{
@@ -74,129 +75,98 @@ class Calendar
 			$this->weeks = [];
 		}
 
+		// Se c'è una data selezionata, imposta il mese selezionato
 		if (isset($this->selected_datetime) && is_object($this->selected_datetime)) {
 			$this->selected_month = $this->selected_datetime->format('Y-m');
 		}
 
+		// Imposta il primo e ultimo giorno della settimana
 		$this->first_day = self::get_first_day_of_week();
 		$this->last_day = self::get_last_day_of_week();
 	}
 
 
+	// Restituisce i nomi dei giorni della settimana
 	public static function get_day_names($style = 'long')
 	{
-		$long = [
-			'1' => 'Monday',
-			'2' => 'Tuesday',
-			'3' => 'Wednesday',
-			'4' => 'Giovedi',
-			'5' => 'Friday',
-			'6' => 'Saturday',
-			'7' => 'Sunday',
-		];
+		$long = ['1' => 'Lunedì', '2' => 'Martedì', '3' => 'Mercoledì', '4' => 'Giovedì', '5' => 'Venerdì', '6' => 'Sabato', '7' => 'Domenica'];
 
-		$short = [
-			'1' => 'Lun',
-			'2' => 'Mar',
-			'3' => 'Mer',
-			'4' => 'Gio',
-			'5' => 'Ven',
-			'6' => 'Sab',
-			'7' => 'Dom',
-		];
+		$short = ['1' => 'Lun', '2' => 'Mar', '3' => 'Mer', '4' => 'Gio', '5' => 'Ven', '6' => 'Sab', '7' => 'Dom'];
 
-		switch ($style) {
-			case 'long': return $long; break;
-			case 'short': return $short; break;
-			default: return FALSE;
-		}
+		// Ritorna i nomi dei giorni in base allo stile
+		return $style === 'long' ? $long : $short;
 	}
 
 
+	// Restituisce il nome di un giorno specifico
 	public static function get_day_name($weekday, $style = 'long')
 	{
 		return self::get_day_names($style)[$weekday];
 	}
 
 
-	/**
-	 * Week starts on.
-	 *
-	 * Could be configurable in the future.
-	 *
-	 */
+	// Primo giorno della settimana (1 = Lunedì)
 	public static function get_first_day_of_week()
 	{
 		return 1;
 	}
 
 
-	/**
-	 * Week ends on.
-	 *
-	 */
+	// Ultimo giorno della settimana (Domenica)
 	public static function get_last_day_of_week()
 	{
-		$day_name = self::get_day_names()[ self::get_first_day_of_week() ];
+		$day_name = self::get_day_names()[self::get_first_day_of_week()];
 		$dt = new DateTime($day_name);
 		$dt->modify('-1 day');
 		return (int) $dt->format('N');
 	}
 
 
-	/**
-	 * Get array of day numbers, in order, starting from the first day of week.
-	 *
-	 */
+	// Restituisce i numeri dei giorni della settimana ordinati
 	public static function get_days_of_week()
 	{
 		$day = self::get_first_day_of_week();
-		$day = ($day >= 1 && $day <= 7 ? $day : 1);
 
 		$days = [];
-
-		while (count($days) < 7) {
+		while (count($days) < 7) { // Aggiunge i giorni della settimana in ordine
 			$days[] = $day;
-			if ($day == 7) {
-				$day = 1;
-			} else {
-				$day++;
-			}
+			$day = $day == 7 ? 1 : $day + 1;
 		}
 
 		return $days;
 	}
 
 
+	// Genera l'HTML della sessione del calendario
 	public function generate_full_session($config = [])
 	{
-		$default = [
-			'column_class' => false,
-		];
+		$default = ['column_class' => false]; // Configurazione di default
 
 		$options = array_merge($default, $config);
 
 		$items = [];
 
+		// Genera tutti i mesi
 		$months = $this->generate_all_months();
 		foreach ($months as $month) {
 			$items[] = $month;
 		}
 
+		// Aggiunge le settimane
 		$weeks = [];
 		foreach ($this->weeks as $week) {
 			$weeks[] = $week->week_id;
 		}
 
-		$data = [
-			'up-data' => json_encode_html(['weeks' => $weeks], TRUE),
-		];
+		// Prepara i dati JSON
+		$data = ['up-data' => json_encode_html(['weeks' => $weeks], TRUE)];
 
 		$data_attrs = '';
 		foreach ($data as $k => $v) {
 			$data_attrs = sprintf("%s='%s'", $k, $v);
 		}
 
+		// Se esiste una classe per le colonne, genera il layout con colonne
 		if ($options['column_class']) {
 			$cols = [];
 			foreach ($items as $item) {
@@ -204,14 +174,12 @@ class Calendar
 			}
 			$html = "<div class='block-group'>" . implode("\n", $cols) . "</div>";
 		} else {
-			$html = implode("\n", $items);
+			$html = implode("\n", $items); // Altrimenti unisce semplicemente gli elementi
 		}
-
 
 		return "<div class='session-calendars mode-{$this->mode}' {$data_attrs}>{$html}</div>";
 	}
-
-
+}
 
 	/**
 	 * Generate calendars for all months in the session.
