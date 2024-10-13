@@ -1,4 +1,4 @@
-<?php defined('BASEPATH') OR exit('No direct script access allowed');
+<?php defined('BASEPATH') OR exit('Accesso diretto allo script non consentito');
 
 class Migration_Alter_multi_booking_tables_add_keys extends CI_Migration
 {

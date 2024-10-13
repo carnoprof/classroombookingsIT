@@ -2,7 +2,7 @@
 
 namespace app\components\bookings;
 
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') OR exit('Accesso diretto allo script non consentito');
 
 
 // use \DateTime;

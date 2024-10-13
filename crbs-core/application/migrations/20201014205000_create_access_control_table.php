@@ -1,4 +1,4 @@
-<?php defined('BASEPATH') OR exit('No direct script access allowed');
+<?php defined('BASEPATH') OR exit('Accesso diretto allo script non consentito');
 
 class Migration_create_access_control_table extends CI_Migration
 {

@@ -9,13 +9,13 @@ class BookingValidationException extends \RuntimeException
 
 	public static function forExistingBooking()
 	{
-		return new static("Another booking already exists.");
+		return new static("Esiste già un altra prenotazione uguale.");
 	}
 
 
 	public static function forHoliday()
 	{
-		return new static("Booking cannot be created on a holiday.");
+		return new static("La prenotazione non può essere creata durante una festività.");
 	}
 
 

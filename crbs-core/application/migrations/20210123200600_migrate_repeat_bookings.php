@@ -1,4 +1,4 @@
-<?php defined('BASEPATH') OR exit('No direct script access allowed');
+<?php defined('BASEPATH') OR exit('Accesso diretto allo script non consentito');
 
 class Migration_Migrate_repeat_bookings extends CI_Migration
 {

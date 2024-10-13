@@ -2,7 +2,7 @@
 
 namespace app\components\bookings;
 
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') OR exit('Accesso diretto allo script non consentito');
 
 
 use \DateTime;
@@ -150,7 +150,7 @@ class Grid
 
 		$check_block = "<div class='block b-50' style='text-align:right'>{$input_label}</div>";
 
-		$submit_button = "<button type='submit' style='margin-left:32px;display:none;' class='multi-select-content'>Create bookings...</button>";
+		$submit_button = "<button type='submit' style='margin-left:32px;display:none;' class='multi-select-content'>Crea prenotazione...</button>";
 		$button_block = "<div class='block b-50'>{$submit_button}</div>";
 
 		return "<div class='cssform block-group' style='margin-top:32px;'>{$check_block}{$button_block}</div>";

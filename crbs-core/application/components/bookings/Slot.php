@@ -116,7 +116,7 @@ class Slot
 			$date_fmt = 'd/m/Y';
 
 			$this->label = $holiday
-				? sprintf("Holiday: %s<br>(%s - %s)",
+				? sprintf("Festività: %s<br>(%s - %s)",
 		          	$holiday->name,
 		          	$holiday->date_start->format($date_fmt),
 		          	$holiday->date_end->format($date_fmt)
@@ -128,7 +128,7 @@ class Slot
 
 		// Check if period is valid.
 		//
-		$period_key = sprintf('day_%d', $this->date->weekday);
+		$period_key = sprintf('Giorno_%d', $this->date->weekday);
 		if ($this->period->{$period_key} != 1) {
 
 			$day_names = Calendar::get_day_names();
@@ -137,7 +137,7 @@ class Slot
 			$this->status = self::STATUS_UNAVAILABLE;
 			$this->reason = self::UNAVAILABLE_PERIOD;
 
-			$this->label = sprintf('%s not available on %s.', $this->period->name, $day_name);
+			$this->label = sprintf('%s non disponibile il %s.', $this->period->name, $day_name);
 
 			return;
 		}
@@ -176,12 +176,12 @@ class Slot
 				case $booking_permitted->date_in_range:
 					$advance = (int) abs(setting('bia'));
 					$this->view_data = ['extended' => 'future'];
-					$this->label = sprintf('You can only create bookings up to %d days in the future.', $advance);
+					$this->label = sprintf('Puoi creare prenotazioni solo fino a %d giorni nel futuro.', $advance);
 					break;
 
 				case $booking_permitted->is_future_date:
 					$this->view_data = ['extended' => 'past'];
-					$this->label = 'Booking date is in the past.';
+					$this->label = 'Impossibile prenotare nel passato.';
 					break;
 
 				case $booking_permitted->in_quota:

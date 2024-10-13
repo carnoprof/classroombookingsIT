@@ -2,7 +2,7 @@
 
 namespace app\components\bookings\agent;
 
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') OR exit('Accesso diretto allo script non consentito');
 
 
 use app\components\bookings\exceptions\AgentException;
@@ -131,7 +131,7 @@ class UpdateAgent extends BaseAgent
 	private function handle_edit()
 	{
 		$this->view = 'bookings/edit/form';
-		$this->title = 'Edit booking';
+		$this->title = 'Modifica prenotazione';
 
 		if ($this->CI->input->post()) {
 			$this->process_edit_booking();
@@ -168,7 +168,7 @@ class UpdateAgent extends BaseAgent
 		$this->CI->form_validation->set_rules($rules);
 
 		if ($this->CI->form_validation->run() == FALSE) {
-			$this->message = 'The form contained some invalid values. Please check and try again.';
+			$this->message = 'Il form conteneva dei valori non validi. Riprovare.';
 			return FALSE;
 		}
 
@@ -207,9 +207,9 @@ class UpdateAgent extends BaseAgent
 		if ($update) {
 
 			$msgs = [
-				self::EDIT_ONE => 'The booking has been updated successfully.',
-				self::EDIT_FUTURE => 'The booking and all future bookings in the series have been updated.',
-				self::EDIT_ALL => 'All bookings in the series have been updated successfully.',
+				self::EDIT_ONE => 'La prenotazione è stata aggiornata con successo.',
+				self::EDIT_FUTURE => 'La prenotazione e tutte le prenotazioni di questa serie sono state aggiornate con successo.',
+				self::EDIT_ALL => 'Tutte le prenotazioni nella serie sono state aggiornate con successo.',
 			];
 
 			$this->message = $msgs[$this->edit_mode];
@@ -222,7 +222,7 @@ class UpdateAgent extends BaseAgent
 
 		$this->message = ($err)
 			? $err
-			: 'Could not create booking.';
+			: 'Non è stato possibile creare la prenotazione.';
 
 		return FALSE;
 	}

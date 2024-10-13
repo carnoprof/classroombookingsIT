@@ -1,4 +1,4 @@
-<?php defined('BASEPATH') OR exit('No direct script access allowed');
+<?php defined('BASEPATH') OR exit('Accesso diretto allo script non consentito');
 
 class Migration_Populate_holiday_sessions extends CI_Migration
 {

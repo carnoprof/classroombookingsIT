@@ -9,25 +9,25 @@ class SettingsException extends \RuntimeException
 
 	public static function forDisplayType()
 	{
-		return new static("The 'Display Type' setting has not been set.");
+		return new static("L'opzione 'Display Type' non è stata selezionata.");
 	}
 
 
 	public static function forColumns()
 	{
-		return new static("The 'Display Columns' setting has not been set.");
+		return new static("L'opzione 'Display Columns' non è stata selezionata.");
 	}
 
 
 	public static function forNoRooms()
 	{
-		return new static("There are no rooms available.");
+		return new static("Non ci sono stanze disponibili.");
 	}
 
 
 	public static function forNoSchedule()
 	{
-		return new static("This room group doesn't have a Schedule configured for this session.");
+		return new static("Questo gruppo di stanze non ha degli orari definiti per questa sessione.");
 	}
 
 

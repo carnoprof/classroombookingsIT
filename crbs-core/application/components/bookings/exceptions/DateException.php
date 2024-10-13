@@ -9,7 +9,7 @@ class DateException extends \RuntimeException
 
 	public static function invalidDate($date_string)
 	{
-		return new static(sprintf("No date selected or date is not valid (%s).", $date_string));
+		return new static(sprintf("Data non seleionata o data non valida (%s).", $date_string));
 	}
 
 
@@ -21,7 +21,7 @@ class DateException extends \RuntimeException
 			$dt = 'None';
 		}
 
-		return new static(sprintf("The selected date (%s), is not within the current Session.", $dt));
+		return new static(sprintf("La data selezionata (%s), non è all'interno della sessione corrente.", $dt));
 	}
 
 

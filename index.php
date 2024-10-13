@@ -33,7 +33,7 @@ if (is_file(ROOTPATH . 'crbs-core/vendor/autoload.php')) {
 }
 
 if ( ! defined('VENDORPATH')) {
-	die("Could not find composer autoload path.");
+	die("Impossibile trovare l'autoloader.");
 }
 
 
@@ -81,7 +81,7 @@ switch (ENVIRONMENT)
 
 	default:
 		header('HTTP/1.1 503 Service Unavailable.', TRUE, 503);
-		echo 'The application environment is not set correctly.';
+		echo 'L\'ambiente dell\'applicazione non è stato impostato correttamente.';
 		exit(1); // EXIT_ERROR
 }
 
@@ -210,7 +210,7 @@ switch (ENVIRONMENT)
 	if ( ! is_dir($system_path))
 	{
 		header('HTTP/1.1 503 Service Unavailable.', TRUE, 503);
-		echo 'Your system folder path does not appear to be set correctly. Please open the following file and correct this: '.pathinfo(__FILE__, PATHINFO_BASENAME);
+		echo 'Il tuo indirizzo della cartella di sitema non sembra sia stata impostata correttamente. Aprà il seguente file e lo corregga: '.pathinfo(__FILE__, PATHINFO_BASENAME);
 		exit(3); // EXIT_CONFIG
 	}
 
@@ -258,7 +258,7 @@ switch (ENVIRONMENT)
 	else
 	{
 		header('HTTP/1.1 503 Service Unavailable.', TRUE, 503);
-		echo 'Your application folder path does not appear to be set correctly. Please open the following file and correct this: '.SELF;
+		echo 'Il tuo indirizzo della cartella dell\'applicazione non sembra sia stata impostata correttamente. Aprà il seguente file e lo corregga: '.SELF;
 		exit(3); // EXIT_CONFIG
 	}
 
@@ -295,7 +295,7 @@ switch (ENVIRONMENT)
 	else
 	{
 		header('HTTP/1.1 503 Service Unavailable.', TRUE, 503);
-		echo 'Your view folder path does not appear to be set correctly. Please open the following file and correct this: '.SELF;
+		echo 'Il tuo indirizzo della cartella visibile non sembra sia stata impostata correttamente. Aprà il seguente file e lo corregga: '.SELF;
 		exit(3); // EXIT_CONFIG
 	}
 
