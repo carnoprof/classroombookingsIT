@@ -12,216 +12,205 @@ use \DatePeriod;
 class Calendar
 {
 
-    // Modalità possibili
-    const MODE_VIEW = 'view';
-    const MODE_NAVIGATE = 'nav';
-    const MODE_CONFIG = 'config';
+	// Mode values
+	const MODE_VIEW = 'view';
+	const MODE_NAVIGATE = 'nav';
+	const MODE_CONFIG = 'config';
 
-    // Istanza di CodeIgniter
-    private $CI;
+	// CI instance
+	private $CI;
 
-    // Oggetto sessione
-    private $session = FALSE;
+	// Session object
+	private $session = FALSE;
 
-    // Array delle settimane
-    private $weeks = FALSE;
+	// Array of timetable weeks
+	private $weeks = FALSE;
 
-    // Modalità corrente [config|navigate|view]
-    private $mode = 'view';
+	// Mode [config|navigate|view]
+	private $mode = 'view';
 
-    // Formato dell'URL per la navigazione
-    private $nav_url_format = '';
+	// URL format for navigation
+	private $nav_url_format = '';
 
-    // Oggetto DateTime per la data selezionata in modalità navigazione
-    private $selected_datetime = FALSE;
+	// DateTime for selected date, in nav mode.
+	private $selected_datetime = FALSE;
 
-    // Stringa con la data formattata come Y-m per identificare il mese selezionato
-    private $selected_month = '';
+	// String of date-formatted Y-m to identify currently selected month.
+	private $selected_month = '';
 
-    // Classe per l'elemento padre (contenitore) del mese
-    private $month_class = '';
+	// Class for parent item
+	private $month_class = '';
 
-    // Array di oggetti data
-    private $dates = [];
+	// Array of date objects
+	private $dates = [];
 
-    // Il primo giorno della settimana (1=Lunedì)
-    private $first_day = 1;
+	// Week starts on (1=Monday)
+	private $first_day = 1;
 
-    // L'ultimo giorno della settimana
-    private $last_day = 7;
-
-
-    // Costruttore della classe, accetta una configurazione opzionale
-    public function __construct($config = [])
-    {
-        $this->CI =& get_instance(); // Ottiene l'istanza di CodeIgniter
-        $this->CI->load->helper('week'); // Carica un helper per gestire le settimane
-
-        $this->init($config); // Inizializza la classe con la configurazione passata
-    }
+	// Week ends on
+	private $last_day = 7;
 
 
-    // Inizializza il calendario con la configurazione
-    public function init($config = [])
-    {
-        foreach ($config as $key => $val) // Per ogni voce nella configurazione
-        {
-            if (isset($this->$key)) // Se la proprietà esiste nella classe
-            {
-                $this->$key = $val; // Imposta il valore corrispondente
-            }
-        }
+	public function __construct($config = [])
+	{
+		$this->CI =& get_instance();
+		$this->CI->load->helper('week');
 
-        if (empty($this->weeks)) { // Se l'array delle settimane è vuoto
-            $this->weeks = []; // Inizializza l'array delle settimane come vuoto
-        }
-
-        // Se esiste una data selezionata e questa è un oggetto valido
-        if (isset($this->selected_datetime) && is_object($this->selected_datetime)) {
-            // Formatta la data selezionata come 'Y-m' e la salva
-            $this->selected_month = $this->selected_datetime->format('Y-m');
-        }
-
-        // Imposta il primo e l'ultimo giorno della settimana utilizzando funzioni statiche
-        $this->first_day = self::get_first_day_of_week();
-        $this->last_day = self::get_last_day_of_week();
-    }
+		$this->init($config);
+	}
 
 
-    // Restituisce i nomi dei giorni della settimana (in formato lungo o corto)
-    public static function get_day_names($style = 'long')
-    {
-        $long = [ // Nomi lunghi dei giorni
-            '1' => 'Lunedì',
-            '2' => 'Martedì',
-            '3' => 'Mercoledì',
-            '4' => 'Giovedì',
-            '5' => 'Venerdì',
-            '6' => 'Sabato',
-            '7' => 'Domenica',
-        ];
+	public function init($config = [])
+	{
+		foreach ($config as $key => $val)
+		{
+			if (isset($this->$key))
+			{
+				$this->$key = $val;
+			}
+		}
 
-        $short = [ // Nomi abbreviati dei giorni
-            '1' => 'Lun',
-            '2' => 'Mar',
-            '3' => 'Mer',
-            '4' => 'Gio',
-            '5' => 'Ven',
-            '6' => 'Sab',
-            '7' => 'Dom',
-        ];
+		if (empty($this->weeks)) {
+			$this->weeks = [];
+		}
 
-        // Restituisce l'array appropriato in base allo stile (lungo o corto)
-        switch ($style) {
-            case 'long': return $long; break;
-            case 'short': return $short; break;
-            default: return FALSE;
-        }
-    }
+		if (isset($this->selected_datetime) && is_object($this->selected_datetime)) {
+			$this->selected_month = $this->selected_datetime->format('Y-m');
+		}
+
+		$this->first_day = self::get_first_day_of_week();
+		$this->last_day = self::get_last_day_of_week();
+	}
 
 
-    // Restituisce il nome di un singolo giorno della settimana
-    public static function get_day_name($weekday, $style = 'long')
-    {
-        // Usa la funzione get_day_names per ottenere il nome del giorno in base al numero del giorno (weekday)
-        return self::get_day_names($style)[$weekday];
-    }
+	public static function get_day_names($style = 'long')
+	{
+		$long = [
+			'1' => 'Monday',
+			'2' => 'Tuesday',
+			'3' => 'Wednesday',
+			'4' => 'Thursday',
+			'5' => 'Friday',
+			'6' => 'Saturday',
+			'7' => 'Sunday',
+		];
+
+		$short = [
+			'1' => 'Mon',
+			'2' => 'Tue',
+			'3' => 'Wed',
+			'4' => 'Thu',
+			'5' => 'Fri',
+			'6' => 'Sat',
+			'7' => 'Sun',
+		];
+
+		switch ($style) {
+			case 'long': return $long; break;
+			case 'short': return $short; break;
+			default: return FALSE;
+		}
+	}
 
 
-    /**
-     * Ritorna il primo giorno della settimana.
-     * Potrebbe diventare configurabile in futuro.
-     */
-    public static function get_first_day_of_week()
-    {
-        return 1; // Lunedì è considerato il primo giorno della settimana
-    }
+	public static function get_day_name($weekday, $style = 'long')
+	{
+		return self::get_day_names($style)[$weekday];
+	}
 
 
-    /**
-     * Ritorna l'ultimo giorno della settimana.
-     */
-    public static function get_last_day_of_week()
-    {
-        // Ottiene il nome del primo giorno della settimana
-        $day_name = self::get_day_names()[ self::get_first_day_of_week() ];
-        $dt = new DateTime($day_name); // Crea un oggetto DateTime per quel giorno
-        $dt->modify('-1 day'); // Riduce di un giorno per ottenere l'ultimo giorno della settimana
-        return (int) $dt->format('N'); // Restituisce il numero dell'ultimo giorno della settimana
-    }
+	/**
+	 * Week starts on.
+	 *
+	 * Could be configurable in the future.
+	 *
+	 */
+	public static function get_first_day_of_week()
+	{
+		return 1;
+	}
 
 
-    /**
-     * Restituisce un array con i numeri dei giorni della settimana, partendo dal primo giorno configurato.
-     */
-    public static function get_days_of_week()
-    {
-        $day = self::get_first_day_of_week(); // Ottiene il primo giorno della settimana
-        $day = ($day >= 1 && $day <= 7 ? $day : 1); // Verifica che il giorno sia compreso tra 1 e 7
-
-        $days = [];
-
-        // Cicla fino a quando l'array contiene tutti e 7 i giorni della settimana
-        while (count($days) < 7) {
-            $days[] = $day; // Aggiunge il giorno corrente all'array
-            if ($day == 7) { // Se il giorno è Domenica, riparte da Lunedì
-                $day = 1;
-            } else {
-                $day++; // Incrementa il giorno
-            }
-        }
-
-        return $days; // Restituisce l'array con i giorni della settimana
-    }
+	/**
+	 * Week ends on.
+	 *
+	 */
+	public static function get_last_day_of_week()
+	{
+		$day_name = self::get_day_names()[ self::get_first_day_of_week() ];
+		$dt = new DateTime($day_name);
+		$dt->modify('-1 day');
+		return (int) $dt->format('N');
+	}
 
 
-    // Genera una sessione completa del calendario
-    public function generate_full_session($config = [])
-    {
-        $default = [
-            'column_class' => false, // Imposta una classe CSS opzionale per le colonne
-        ];
+	/**
+	 * Get array of day numbers, in order, starting from the first day of week.
+	 *
+	 */
+	public static function get_days_of_week()
+	{
+		$day = self::get_first_day_of_week();
+		$day = ($day >= 1 && $day <= 7 ? $day : 1);
 
-        // Unisce le opzioni di default con quelle fornite nella configurazione
-        $options = array_merge($default, $config);
+		$days = [];
 
-        $items = [];
+		while (count($days) < 7) {
+			$days[] = $day;
+			if ($day == 7) {
+				$day = 1;
+			} else {
+				$day++;
+			}
+		}
 
-        $months = $this->generate_all_months(); // Genera i mesi
-        foreach ($months as $month) {
-            $items[] = $month; // Aggiunge ciascun mese all'array degli elementi
-        }
+		return $days;
+	}
 
-        $weeks = [];
-        foreach ($this->weeks as $week) {
-            $weeks[] = $week->week_id; // Aggiunge l'ID di ciascuna settimana
-        }
 
-        // Prepara i dati per essere inclusi nell'HTML
-        $data = [
-            'up-data' => json_encode_html(['weeks' => $weeks], TRUE), // Codifica i dati delle settimane in formato JSON
-        ];
+	public function generate_full_session($config = [])
+	{
+		$default = [
+			'column_class' => false,
+		];
 
-        $data_attrs = '';
-        foreach ($data as $k => $v) {
-            $data_attrs = sprintf("%s='%s'", $k, $v); // Crea gli attributi dei dati da includere nell'HTML
-        }
+		$options = array_merge($default, $config);
 
-        // Se è definita una classe per le colonne, avvolge ogni elemento in un div con quella classe
-        if ($options['column_class']) {
-            $cols = [];
-            foreach ($items as $item) {
-                $cols[] = "<div class='block {$options['column_class']}'>{$item}</div>";
-            }
-            $html = "<div class='block-group'>" . implode("\n", $cols) . "</div>";
-        } else {
-            $html = implode("\n", $items); // Unisce tutti gli elementi in un'unica stringa
-        }
+		$items = [];
 
-        // Restituisce l'HTML generato con le informazioni del calendario
-        return "<div class='session-calendars mode-{$this->mode}' {$data_attrs}>{$html}</div>";
-    }
-}
+		$months = $this->generate_all_months();
+		foreach ($months as $month) {
+			$items[] = $month;
+		}
+
+		$weeks = [];
+		foreach ($this->weeks as $week) {
+			$weeks[] = $week->week_id;
+		}
+
+		$data = [
+			'up-data' => json_encode_html(['weeks' => $weeks], TRUE),
+		];
+
+		$data_attrs = '';
+		foreach ($data as $k => $v) {
+			$data_attrs = sprintf("%s='%s'", $k, $v);
+		}
+
+		if ($options['column_class']) {
+			$cols = [];
+			foreach ($items as $item) {
+				$cols[] = "<div class='block {$options['column_class']}'>{$item}</div>";
+			}
+			$html = "<div class='block-group'>" . implode("\n", $cols) . "</div>";
+		} else {
+			$html = implode("\n", $items);
+		}
+
+
+		return "<div class='session-calendars mode-{$this->mode}' {$data_attrs}>{$html}</div>";
+	}
+
 
 
 	/**
