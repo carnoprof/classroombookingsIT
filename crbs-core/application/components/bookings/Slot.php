@@ -128,7 +128,7 @@ class Slot
 
 		// Check if period is valid.
 		//
-		$period_key = sprintf('Giorno_%d', $this->date->weekday);
+		$period_key = sprintf('day_%d', $this->date->weekday);
 		if ($this->period->{$period_key} != 1) {
 
 			$day_names = Calendar::get_day_names();
